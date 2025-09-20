@@ -47,9 +47,19 @@ function App() {
           <span key={idx} className="slot-digit">{d}</span>
         ))}
       </div>
-      <button onClick={spin} disabled={spinning} className="spin-btn">
-        {spinning ? 'Spinning...' : 'Spin'}
-      </button>
+      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+        <button onClick={spin} disabled={spinning} className="spin-btn">
+          {spinning ? 'Spinning...' : 'Spin'}
+        </button>
+        <button
+          onClick={() => setDigits(['0', '0', '0'])}
+          disabled={spinning}
+          className="spin-btn"
+          style={{ background: '#fff', color: '#222', border: '1px solid #ccc' }}
+        >
+          Reset
+        </button>
+      </div>
     </div>
   );
 }
