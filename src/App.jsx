@@ -8,12 +8,19 @@ function padNumber(num) {
 function App() {
   const [digits, setDigits] = useState(['0', '0', '0']);
   const [spinning, setSpinning] = useState(false);
+  const [availableNumbers, setAvailableNumbers] = useState(
+    Array.from({ length: 100 }, (_, i) => padNumber(i + 1))
+  );
+  const [history, setHistory] = useState([]);
 
   const spin = () => {
+    if (availableNumbers.length === 0) return;
     setSpinning(true);
-    let finalNum = Math.floor(Math.random() * 100) + 1;
-    let finalDigits = padNumber(finalNum).split('');
-    let spinCounts = [20, 30, 40]; // left, middle, right
+    // Pick a random index from availableNumbers
+    const idx = Math.floor(Math.random() * availableNumbers.length);
+    const finalNum = availableNumbers[idx];
+    let finalDigits = finalNum.split('');
+    let spinCounts = [20, 30, 40];
     let intervals = [null, null, null];
 
     // For each digit, spin and stop one by one
@@ -32,8 +39,12 @@ function App() {
             newDigits[i] = finalDigits[i];
             return newDigits;
           });
-          // If last digit stopped, end spinning
-          if (i === 2) setSpinning(false);
+          if (i === 2) {
+            setSpinning(false);
+            // Remove the drawn number from availableNumbers and add to history
+            setAvailableNumbers(nums => nums.filter((_, nidx) => nidx !== idx));
+            setHistory(h => [finalNum, ...h]);
+          }
         }
       }, 60 + i * 40);
     }
@@ -48,17 +59,20 @@ function App() {
         ))}
       </div>
       <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-        <button onClick={spin} disabled={spinning} className="spin-btn">
-          {spinning ? 'Spinning...' : 'Spin'}
+        <button onClick={spin} disabled={spinning || availableNumbers.length === 0} className="spin-btn">
+          {spinning ? 'Spinning...' : availableNumbers.length === 0 ? 'All Drawn' : 'Spin'}
         </button>
         <button
           onClick={() => setDigits(['0', '0', '0'])}
-          disabled={spinning}
+          disabled={spinning || availableNumbers.length === 0}
           className="spin-btn"
           style={{ background: '#fff', color: '#222', border: '1px solid #ccc' }}
         >
           Reset
         </button>
+      </div>
+      <div style={{ marginTop: '1.5rem', color: '#fff', fontSize: '1.1rem' }}>
+        <b>Drawn Numbers:</b> {history.join(', ')}
       </div>
     </div>
   );
