@@ -43,7 +43,7 @@ function App() {
   const intervals = useRef([null, null, null]);
 
   const spin = () => {
-    if (availableNumbers.length === 0) return;
+    if (availableNumbers.length === 0 || spinning) return;
     setSpinning(true);
     const idx = Math.floor(Math.random() * availableNumbers.length);
     const finalNum = availableNumbers[idx];
@@ -96,15 +96,12 @@ function App() {
   };
 
   return (
-    <div className="slot-1x3-container">
+    <div className="slot-1x3-container" onClick={spin} style={{cursor: spinning || availableNumbers.length === 0 ? 'not-allowed' : 'pointer'}}>
       <div className="slot-1x3-row">
         {reels.map((reel, idx) => (
           <SlotDigit key={idx} pos={reel.pos} spinning={reel.spinning} />
         ))}
       </div>
-      <button onClick={spin} disabled={spinning || availableNumbers.length === 0} className="spin-btn-1x1">
-        {spinning ? 'Spinning...' : availableNumbers.length === 0 ? 'All Drawn' : 'Spin'}
-      </button>
     </div>
   );
 }
