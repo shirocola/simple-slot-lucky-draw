@@ -6,14 +6,35 @@ function padNumber(num) {
 }
 
 const DIGITS = Array.from({ length: 10 }, (_, i) => i.toString());
-const REEL_LENGTH = 10;
+
+function SlotDigit({ pos, spinning }) {
+  // Create extended digit array for smooth scrolling
+  const extendedDigits = [...DIGITS, ...DIGITS, ...DIGITS];
+
+  return (
+    <div className="slot-1x3-digit">
+      <div
+        className={`slot-reel-container ${spinning ? 'spinning' : ''}`}
+        style={{
+          transform: `translateY(-${pos * 100}%)`
+        }}
+      >
+        {extendedDigits.map((digit, idx) => (
+          <div key={idx} className="slot-digit-item">
+            {digit}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 function App() {
   // Three reels for 1x3 slot
   const [reels, setReels] = useState([
-    { reel: [...DIGITS], pos: 0 },
-    { reel: [...DIGITS], pos: 0 },
-    { reel: [...DIGITS], pos: 0 },
+    { pos: 10, spinning: false }, // Start at position 10 (middle set)
+    { pos: 10, spinning: false },
+    { pos: 10, spinning: false },
   ]);
   const [spinning, setSpinning] = useState(false);
   const [availableNumbers, setAvailableNumbers] = useState(
@@ -27,44 +48,58 @@ function App() {
     const idx = Math.floor(Math.random() * availableNumbers.length);
     const finalNum = availableNumbers[idx];
     const finalDigits = finalNum.split('');
-    const stopDelays = [24, 32, 40];
-    let counts = [0, 0, 0];
+    const spinDurations = [2000, 2500, 3000]; // Different durations for each reel
+
+    // Start spinning all reels
+    setReels(prev => prev.map(reel => ({ ...reel, spinning: true })));
+
     for (let col = 0; col < 3; col++) {
       if (intervals.current[col]) clearInterval(intervals.current[col]);
+
+      // Fast spinning - increment position every 100ms
       intervals.current[col] = setInterval(() => {
         setReels(prev => {
-          const newReels = prev.map(r => ({ ...r }));
-          newReels[col].pos = (newReels[col].pos + 1) % REEL_LENGTH;
+          const newReels = [...prev];
+          newReels[col] = {
+            ...newReels[col],
+            pos: (newReels[col].pos + 1) % 10,
+            spinning: true
+          };
           return newReels;
         });
-        counts[col]++;
-        if (counts[col] >= stopDelays[col]) {
-          clearInterval(intervals.current[col]);
-          setReels(prev => {
-            const newReels = prev.map(r => ({ ...r }));
-            const idxInReel = newReels[col].reel.indexOf(finalDigits[col]);
-            newReels[col].pos = idxInReel;
-            return newReels;
-          });
-          if (col === 2) {
-            setTimeout(() => {
-              setSpinning(false);
-              setAvailableNumbers(nums => nums.filter((_, nidx) => nidx !== idx));
-            }, 400);
-          }
+      }, 100);
+
+      // Stop each reel at different times
+      setTimeout(() => {
+        clearInterval(intervals.current[col]);
+
+        // Set final position and stop spinning
+        setReels(prev => {
+          const newReels = [...prev];
+          newReels[col] = {
+            ...newReels[col],
+            pos: parseInt(finalDigits[col]) + 10, // Add 10 to use middle set of digits
+            spinning: false
+          };
+          return newReels;
+        });
+
+        // When last reel stops, finish spinning
+        if (col === 2) {
+          setTimeout(() => {
+            setSpinning(false);
+            setAvailableNumbers(nums => nums.filter((_, nidx) => nidx !== idx));
+          }, 300);
         }
-      }, 60 + col * 40);
+      }, spinDurations[col]);
     }
   };
-
-  // Get the visible digit for each reel
-  const digits = reels.map(r => r.reel[r.pos % REEL_LENGTH]);
 
   return (
     <div className="slot-1x3-container">
       <div className="slot-1x3-row">
-        {digits.map((digit, idx) => (
-          <span key={idx} className="slot-1x3-digit">{digit}</span>
+        {reels.map((reel, idx) => (
+          <SlotDigit key={idx} pos={reel.pos} spinning={reel.spinning} />
         ))}
       </div>
       <button onClick={spin} disabled={spinning || availableNumbers.length === 0} className="spin-btn-1x1">
