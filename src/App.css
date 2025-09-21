@@ -136,3 +136,126 @@ body {
   background: rgba(170, 170, 170, 0.6);
   cursor: not-allowed;
 }
+
+.slot-minimal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.slot-number-minimal {
+  display: flex;
+  justify-content: center;
+  gap: 2.2rem;
+  background: none;
+  border: none;
+  box-shadow: none;
+  margin-bottom: 2.5rem;
+}
+
+.slot-digit-minimal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 5.5rem;
+  height: 6.5rem;
+  font-size: 5.2rem;
+  color: #fff;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  background: none;
+  border: none;
+  box-shadow: none;
+  text-shadow: 0 2px 16px #000a, 0 0 8px #fff8;
+  margin: 0.2rem 0;
+}
+
+.slot-digit-center {
+  color: #fff;
+  text-shadow: 0 0 24px #ffd700, 0 2px 16px #000a, 0 0 8px #fff8;
+}
+
+.spin-btn-minimal {
+  font-size: 2.2rem;
+  padding: 1.1rem 4.5rem;
+  border-radius: 1rem;
+  border: none;
+  background: #fff;
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 16px #0002;
+}
+.spin-btn-minimal:disabled {
+  background: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.slot-1x1-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.slot-1x1-number {
+  font-size: 12rem;
+  color: #fff;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 0 2px 32px #000a, 0 0 16px #fff8;
+  margin-bottom: 3rem;
+  letter-spacing: 0.1em;
+}
+
+.spin-btn-1x1 {
+  font-size: 2.5rem;
+  padding: 1.3rem 5.5rem;
+  border-radius: 1.2rem;
+  border: none;
+  background: #fff;
+  color: #222;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+  box-shadow: 0 2px 16px #0002;
+}
+.spin-btn-1x1:disabled {
+  background: #eee;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.slot-1x3-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.slot-1x3-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3.5rem;
+  margin-bottom: 3.5rem;
+}
+
+.slot-1x3-digit {
+  font-size: 12rem;
+  color: #fff;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 0 2px 32px #000a, 0 0 16px #fff8;
+  letter-spacing: 0.1em;
+}

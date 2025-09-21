@@ -1,79 +1,75 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 
 function padNumber(num) {
   return num.toString().padStart(3, '0');
 }
 
+const DIGITS = Array.from({ length: 10 }, (_, i) => i.toString());
+const REEL_LENGTH = 10;
+
 function App() {
-  const [digits, setDigits] = useState(['0', '0', '0']);
+  // Three reels for 1x3 slot
+  const [reels, setReels] = useState([
+    { reel: [...DIGITS], pos: 0 },
+    { reel: [...DIGITS], pos: 0 },
+    { reel: [...DIGITS], pos: 0 },
+  ]);
   const [spinning, setSpinning] = useState(false);
   const [availableNumbers, setAvailableNumbers] = useState(
     Array.from({ length: 100 }, (_, i) => padNumber(i + 1))
   );
-  const [history, setHistory] = useState([]);
+  const intervals = useRef([null, null, null]);
 
   const spin = () => {
     if (availableNumbers.length === 0) return;
     setSpinning(true);
-    // Pick a random index from availableNumbers
     const idx = Math.floor(Math.random() * availableNumbers.length);
     const finalNum = availableNumbers[idx];
-    let finalDigits = finalNum.split('');
-    let spinCounts = [20, 30, 40];
-    let intervals = [null, null, null];
-
-    // For each digit, spin and stop one by one
-    for (let i = 0; i < 3; i++) {
-      intervals[i] = setInterval(() => {
-        setDigits(prev => {
-          const newDigits = [...prev];
-          newDigits[i] = Math.floor(Math.random() * 10).toString();
-          return newDigits;
+    const finalDigits = finalNum.split('');
+    const stopDelays = [24, 32, 40];
+    let counts = [0, 0, 0];
+    for (let col = 0; col < 3; col++) {
+      if (intervals.current[col]) clearInterval(intervals.current[col]);
+      intervals.current[col] = setInterval(() => {
+        setReels(prev => {
+          const newReels = prev.map(r => ({ ...r }));
+          newReels[col].pos = (newReels[col].pos + 1) % REEL_LENGTH;
+          return newReels;
         });
-        spinCounts[i]--;
-        if (spinCounts[i] === 0) {
-          clearInterval(intervals[i]);
-          setDigits(prev => {
-            const newDigits = [...prev];
-            newDigits[i] = finalDigits[i];
-            return newDigits;
+        counts[col]++;
+        if (counts[col] >= stopDelays[col]) {
+          clearInterval(intervals.current[col]);
+          setReels(prev => {
+            const newReels = prev.map(r => ({ ...r }));
+            const idxInReel = newReels[col].reel.indexOf(finalDigits[col]);
+            newReels[col].pos = idxInReel;
+            return newReels;
           });
-          if (i === 2) {
-            setSpinning(false);
-            // Remove the drawn number from availableNumbers and add to history
-            setAvailableNumbers(nums => nums.filter((_, nidx) => nidx !== idx));
-            setHistory(h => [finalNum, ...h]);
+          if (col === 2) {
+            setTimeout(() => {
+              setSpinning(false);
+              setAvailableNumbers(nums => nums.filter((_, nidx) => nidx !== idx));
+            }, 400);
           }
         }
-      }, 60 + i * 40);
+      }, 60 + col * 40);
     }
   };
 
+  // Get the visible digit for each reel
+  const digits = reels.map(r => r.reel[r.pos % REEL_LENGTH]);
+
   return (
-    <div className="slot-container">
-      <h1 className="slot-title">Simple Slot Lucky Draw</h1>
-      <div className="slot-number">
-        {digits.map((d, idx) => (
-          <span key={idx} className="slot-digit">{d}</span>
+    <div className="slot-1x3-container">
+      <div className="slot-1x3-row">
+        {digits.map((digit, idx) => (
+          <span key={idx} className="slot-1x3-digit">{digit}</span>
         ))}
       </div>
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-        <button onClick={spin} disabled={spinning || availableNumbers.length === 0} className="spin-btn">
-          {spinning ? 'Spinning...' : availableNumbers.length === 0 ? 'All Drawn' : 'Spin'}
-        </button>
-        <button
-          onClick={() => setDigits(['0', '0', '0'])}
-          disabled={spinning || availableNumbers.length === 0}
-          className="spin-btn"
-          style={{ background: '#fff', color: '#222', border: '1px solid #ccc' }}
-        >
-          Reset
-        </button>
-      </div>
-      <div style={{ marginTop: '1.5rem', color: '#fff', fontSize: '1.1rem' }}>
-        <b>Drawn Numbers:</b> {history.join(', ')}
-      </div>
+      <button onClick={spin} disabled={spinning || availableNumbers.length === 0} className="spin-btn-1x1">
+        {spinning ? 'Spinning...' : availableNumbers.length === 0 ? 'All Drawn' : 'Spin'}
+      </button>
     </div>
   );
 }
