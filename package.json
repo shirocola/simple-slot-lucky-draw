@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron": "electron electron.cjs"
+    "electron": "electron electron.cjs",
+    "pack": "electron-builder"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -20,10 +21,27 @@
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.2",
     "electron": "^38.1.2",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.35.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.4.0",
     "vite": "^7.1.6"
-  }
+  },
+  "build": {
+    "appId": "com.yourcompany.simpleslotluckydraw",
+    "productName": "Simple Slot Lucky Draw",
+    "files": [
+      "dist/**/*",
+      "electron.cjs",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "assets"
+    },
+    "win": {
+      "icon": "assets/icon.ico"
+    }
+  },
+  "main": "electron.cjs"
 }
