@@ -70,31 +70,53 @@ body {
 .slot-number {
   display: flex;
   justify-content: center;
-  gap: 1rem;
-  font-size: 4rem;
-  font-family: 'Courier New', Courier, monospace;
-  background: rgba(34, 34, 34, 0.4);
-  color: #fff;
-  border-radius: 1rem;
-  padding: 1.5rem 3rem;
+  gap: 0.5rem;
+  background: linear-gradient(180deg, #e0e6ed 0%, #bfc9d1 100%);
+  border: 8px solid #111;
+  border-radius: 1.2rem;
+  box-shadow: 0 6px 32px 0 rgba(0,0,0,0.25), 0 0 0 4px #222 inset;
+  padding: 1.2rem 2.2rem;
   margin-bottom: 2rem;
-  letter-spacing: 0.3em;
-  box-shadow: 0 4px 24px #0002;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  position: relative;
 }
 
 .slot-digit {
-  display: inline-block;
-  min-width: 2.5rem;
-  background: rgba(51, 51, 51, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 3.5rem;
+  height: 4.2rem;
+  background: linear-gradient(180deg, #f7fafd 0%, #bfc9d1 100%);
   border-radius: 0.5rem;
   margin: 0 0.2rem;
-  box-shadow: 0 2px 8px #0003;
-  padding: 0.5rem 0.7rem;
-  transition: background 0.2s;
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  box-shadow: 0 2px 8px #0006, 0 0 0 3px #222 inset;
+  font-size: 3rem;
+  color: #d32f2f;
+  font-weight: bold;
+  font-family: 'Courier New', Courier, monospace;
+  text-shadow: 1px 2px 0 #fff, 0 2px 8px #000a;
+  border: 2px solid #222;
+  position: relative;
+}
+
+.slot-digit:before {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; top: 0; height: 20%;
+  background: linear-gradient(180deg,rgba(255,255,255,0.7),rgba(255,255,255,0));
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  pointer-events: none;
+}
+
+.slot-digit:after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0; height: 18%;
+  background: linear-gradient(0deg,rgba(0,0,0,0.10),rgba(0,0,0,0));
+  border-bottom-left-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+  pointer-events: none;
 }
 
 .spin-btn {
