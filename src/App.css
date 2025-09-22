@@ -1,17 +1,12 @@
-body {
-  background: transparent !important;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-}
-
-#root {
+body, #root {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
-  text-align: center;
-  background: transparent !important;
+  /* Fake transparency: */
+  background: rgba(36,36,36,0.5); /* semi-transparent dark */
+  backdrop-filter: blur(16px);    /* blur whatever is behind, if supported */
+  -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
 }
 

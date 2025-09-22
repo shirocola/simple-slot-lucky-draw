@@ -1,0 +1,15 @@
+{
+  "short_name": "SlotDraw",
+  "name": "Simple Slot Lucky Draw",
+  "icons": [
+    {
+      "src": "vite.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "transparent",
+  "theme_color": "#242424"
+}
