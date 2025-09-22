@@ -38,7 +38,7 @@ function App() {
   ]);
   const [spinning, setSpinning] = useState(false);
   const [availableNumbers, setAvailableNumbers] = useState(
-    Array.from({ length: 100 }, (_, i) => padNumber(i + 1))
+    Array.from({ length: 111 }, (_, i) => padNumber(i))
   );
   const intervals = useRef([null, null, null]);
 

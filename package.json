@@ -9,7 +9,9 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "electron": "electron electron.cjs",
-    "pack": "electron-builder"
+    "electron-dev": "set NODE_ENV=development && electron electron.cjs",
+    "pack": "npm run build && electron-builder",
+    "pack-win": "npm run build && electron-builder --win"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -40,7 +42,9 @@
       "buildResources": "assets"
     },
     "win": {
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.ico",
+      "forceCodeSigning": false,
+      "signAndEditExecutable": false
     }
   },
   "main": "electron.cjs"
