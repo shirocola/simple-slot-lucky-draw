@@ -255,19 +255,16 @@ body, #root {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 0;
+  gap: min(2rem, 4vw);
   margin-bottom: min(2rem, 5vh);
   flex-wrap: nowrap;
-  margin-left: -2rem;
-  margin-right: -2rem;
 }
 
 .slot-1x3-digit {
   position: relative;
-  width: min(20rem, 35vw);
-  height: min(32rem, 65vh);
+  width: min(6rem, 12vw);
+  height: min(10rem, 20vh);
   overflow: hidden;
-  margin: 0 -2rem;
 }
 
 .slot-1x3-digit.spinning {
@@ -296,10 +293,10 @@ body, #root {
 }
 
 .slot-digit-item {
-  font-size: min(28rem, 32vw, 55vh);
+  font-size: min(8rem, 10vw, 15vh);
   color: #fff;
   font-weight: bold;
-  font-family: Arial, sans-serif;
+  font-family: 'Courier New', Courier, monospace;
   text-shadow: 0 2px 32px #000a, 0 0 16px #fff8;
   letter-spacing: 0.1em;
   height: 100%;
